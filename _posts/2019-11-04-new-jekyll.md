@@ -1,7 +1,9 @@
 ---
-layout: post
+#layout: post
 title: Github Pagesでjekyllのサイトを作ってWSLでテストする方法
 date: 2019-11-04 22:51 +0900
+categories:
+  - Blog
 ---
 
 n番煎じな内容ですが、とりあえず最低限の作業量でjekyllテスト環境を作ったりする手順です。Ruby未経験でbundlerとは何ぞやという所からスタートだったので結構ハマりました。
@@ -135,23 +137,13 @@ GitHub Pagesでは以下のテーマを標準でサポートしている。
 
 [Supported themes \| GitHub Pages](https://pages.github.com/themes/)
 
-ただし、_layouts にdefaultしか定義していないものが多く、そのまま適用すると「Build Warning: Layout 'home' requested in index.md does not exist.」とか出てトップページが表示されなくなる。単一ページを作るだけなら問題ないが、ブログっぽいものを作るときは大変不便。自分で定義すればいいのだがHTMLがさっぱり分からないので、標準テーマの_layoutsをコピーしておく。
+ただし、_layouts にdefaultしか定義していないものが多く、そのまま適用すると「Build Warning: Layout 'home' requested in index.md does not exist.」とか出てトップページが表示されなくなる。単一ページを作るだけなら問題ないが、ブログっぽいものを作るときは大変不便。
 
-``` shell
-mkdir _layouts
-wget https://raw.githubusercontent.com/jekyll/minima/master/_layouts/home.html -O ./_layouts/home.html
-wget https://raw.githubusercontent.com/jekyll/minima/master/_layouts/page.html -O ./_layouts/page.html
-wget https://raw.githubusercontent.com/jekyll/minima/master/_layouts/post.html -O ./_layouts/post.html
-```
-コピーが済んだらいい感じのテーマを選んで適用する。
-``` shell
-vi ./_config.yaml
-```
-``` diff
-- theme: minima
-+ theme: jekyll-theme-cayman
-```
-とりあえず表示されるものの、レイアウトが最低限な感じでブログっぽくない。あと_includesとかもコピーした方がいい気がする。気合と根性で何とかするしかない。
+諸々悩んだ結果、Minimal Mistakesというテーマが良さそうなので適用した。[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio.](https://github.com/mmistakes/minimal-mistakes)
+
+適用するには_config.yamlや色々リソースを作る必要があるため、以下のスターターからファイルをコピーしてくると大変楽。
+
+[mmistakes/mm-github-pages-starter: Minimal Mistakes GitHub Pages site starter](https://github.com/mmistakes/mm-github-pages-starter)
 
 その他
 ---------------------
