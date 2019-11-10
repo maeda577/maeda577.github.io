@@ -115,3 +115,21 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
+
+jekyll_compose:
+  default_front_matter:
+    drafts:
+      description:
+      categories:
+        - Blog
+      tags:
+    posts:
+      description:
+      image:
+      categories:
+        - Blog
+      tags:
+      published: false
+      sitemap: false
+      
