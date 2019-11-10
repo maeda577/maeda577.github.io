@@ -25,7 +25,7 @@ github_username: maeda577
 # Build settings
 markdown: kramdown
 # theme: jekyll-theme-cayman
-theme: jekyll-theme-minimal
+theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
 
