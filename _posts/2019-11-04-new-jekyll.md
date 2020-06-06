@@ -1,9 +1,7 @@
 ---
-#layout: post
+layout: post
 title: Github Pagesでjekyllのサイトを作ってWSLでテストする方法
 date: 2019-11-04 22:51 +0900
-categories:
-  - Blog
 ---
 
 n番煎じな内容ですが、とりあえず最低限の作業量でjekyllテスト環境を作ったりする手順です。Ruby未経験でbundlerとは何ぞやという所からスタートだったので結構ハマりました。

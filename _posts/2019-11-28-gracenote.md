@@ -1,7 +1,6 @@
 ---
+layout: post
 title: 「EACからGracenoteへ接続するためのCDDBサーバ」を停止しました
-categories:
-- Blog
 date: 2019-11-28 22:02 +0900
 ---
 色々あってGracenoteのAPIに繋げられなくなったので止めました。南無。
