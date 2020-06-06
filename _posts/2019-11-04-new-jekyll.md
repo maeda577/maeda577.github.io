@@ -143,6 +143,10 @@ GitHub Pagesでは以下のテーマを標準でサポートしている。
 
 [mmistakes/mm-github-pages-starter: Minimal Mistakes GitHub Pages site starter](https://github.com/mmistakes/mm-github-pages-starter)
 
+2020/06/06追記
+
+トップページが出ないのはindex.htmlを作成していないため。作ったらいい感じになったので、テーマをGitHub Pagesで標準サポートしているCaymanに変更しました。合わせて_layoutsにページ定義を作成していくとカスタマイズしやすくて良き。
+
 その他
 ---------------------
 
