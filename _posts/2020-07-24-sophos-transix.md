@@ -3,7 +3,7 @@ layout: post
 title: XG FirewallでIPv6 IPoEとtransix
 date: 2020-07-24 18:34 +0900
 ---
-[前はSEILでやりましたが](https://maeda577.github.io/2020/06/02/seil-ipv6.html)今度はXG Firewallで設定しました。
+[前はSEILでやりましたが](/2020/06/02/seil-ipv6.html)今度はXG Firewallで設定しました。
 
 前提条件
 -------------------------------
