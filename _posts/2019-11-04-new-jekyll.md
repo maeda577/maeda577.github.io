@@ -22,15 +22,15 @@ Github上のリポジトリ作成
 
 WSL Ubuntuの環境構築
 ---------------------
-まずはこのあたりを読みながらWSLを有効化する。ディストリビューションはUbuntuで。
+まずはこのあたりを読みながらWSL2とUbuntu20.04を有効化する。
 
-[Windows Subsystem for Linux を有効にし、ディストリビューションをインストールする - Learn \| Microsoft Docs](https://docs.microsoft.com/ja-jp/learn/modules/get-started-with-windows-subsystem-for-linux/2-enable-and-install)
+[Windows Subsystem for Linux (WSL) を Windows 10 にインストールする | Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install-win10)
 
 インストール後はアップデートしRuby導入。後々sudoするのが大変になるらしいので、bundlerはユーザー領域に導入する。
 ``` shell
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install ruby2.5
+sudo apt-get install ruby
 gem install bundler --user-install
 ```
 
@@ -43,10 +43,9 @@ vi ~/.bashrc
 ```
 末尾に以下を追加。
 ``` diff
-+ # add PATH to user-install gems.
-+ if which ruby >/dev/null && which gem >/dev/null; then
-+   PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
-+ fi
+if which ruby >/dev/null && which gem >/dev/null; then
+  PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
 ```
 
 bashrcの再読み込み
@@ -67,7 +66,7 @@ Gemfileを作成する。そこにGithub Pages用のgemファイルを追加し�
 ``` shell
 bundle init
 echo "gem 'github-pages', group: :jekyll_plugins" >> ./Gemfile
-sudo apt-get install ruby2.5-dev make gcc g++ zlib1g-dev
+sudo apt-get install ruby-dev make gcc g++ zlib1g-dev
 bundle install --path ~/.gem/
 ```
 
@@ -158,3 +157,5 @@ GitHub Pagesで動いているプラグインなど。これらは_config.yaml�
 
 [Dependency versions \| GitHub Pages](https://pages.github.com/versions/)
 
+2020/09/22追記
+WSL2とUbuntu 20.04で構築するよう修正
