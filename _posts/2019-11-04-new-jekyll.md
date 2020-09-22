@@ -11,6 +11,7 @@ n番煎じな内容ですが、とりあえず最低限の作業量でjekyllテ�
 
 - jekyllのビルドはGithub Pages上で動いているものを使う（HTMLのアップロードは行わない）
 - 手元の表示テストにはWSL Ubuntuを使う
+    - 2020/09/22追記 WSL2とUbuntu 20.04で構築するよう修正
 - WSL上ではRubyを使っておらず、今後も使う予定がない
     - rbenvとかは考えない
 
@@ -41,11 +42,16 @@ bundlerのインストール時にパスが通っていないと言われるの�
 ``` shell
 vi ~/.bashrc
 ```
-末尾に以下を追加。
+末尾に追加。
 ``` diff
-if which ruby >/dev/null && which gem >/dev/null; then
-  PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
-fi
+@@ -116,3 +116,7 @@
+   fi
+ fi
+
++if which ruby >/dev/null && which gem >/dev/null; then
++  PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
++fi
++
 ```
 
 bashrcの再読み込み
@@ -80,8 +86,8 @@ jekyll new . --force
 vi .Gemfile
 ```
 ``` diff
-- #gem "github-pages", group: :jekyll_plugins
-+ gem "github-pages", group: :jekyll_plugins
+-#gem "github-pages", group: :jekyll_plugins
++gem "github-pages", group: :jekyll_plugins
 ```
 
 一応。多分何も起きない
@@ -156,6 +162,3 @@ GitHub Pagesでは以下のテーマを標準でサポートしている。
 GitHub Pagesで動いているプラグインなど。これらは_config.yamlのpluginsで使っても動くはず。
 
 [Dependency versions \| GitHub Pages](https://pages.github.com/versions/)
-
-2020/09/22追記
-WSL2とUbuntu 20.04で構築するよう修正
