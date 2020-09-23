@@ -25,7 +25,7 @@ WSL Ubuntuの環境構築
 ---------------------
 まずはこのあたりを読みながらWSL2とUbuntu20.04を有効化する。
 
-[Windows Subsystem for Linux (WSL) を Windows 10 にインストールする | Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install-win10)
+[Windows Subsystem for Linux (WSL) を Windows 10 にインストールする \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install-win10)
 
 インストール後はアップデートしRuby導入。後々sudoするのが大変になるらしいので、bundlerはユーザー領域に導入する。
 ``` shell
