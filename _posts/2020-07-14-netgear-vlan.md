@@ -21,8 +21,8 @@ VLAN用語の対応表
 
 | NETGEAR | Cisco | メモ |
 | -- | -- | -- |
-| 拡張802.1Q VLANを [有効] | 全ポートで <br /> switchport mode trunk <br /> switchport trunk native vlan 1 |
-| VLANポートメンバーで \<VLAN ID\> を [追加] | vlan \<VLAN ID\> | NETGEARでは必須 |
+| 拡張802.1Q VLANを [有効] | 全ポートで <br /> switchport mode trunk <br /> switchport trunk native vlan 1 <br /> switchport trunk allowed vlan 1 |
+| VLANポートメンバーで \<VLAN ID\> を [追加] | vlan \<VLAN ID\> | 必須 |
 | VLANメンバーシップでポートの \<VLAN ID\> を [T] にする | switchport trunk allowed vlan add \<VLAN ID\> | 
 | VLANメンバーシップでポートの \<VLAN ID\> を [U] にする| (相当するものなし。強いて言えばnative vlanとして指定するためだけのallowed vlan add) | これを指定しないと<br />下のPVIDを指定できない |
 | VLANメンバーシップでポートの \<VLAN ID\> を指定なしにする| switchport trunk allowed vlan remove \<VLAN ID\> |
