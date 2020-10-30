@@ -7,7 +7,7 @@ date: 2020-10-30 23:28 +0900
 
 はじめに
 ---------------------
-configを生成するExcelシートを作りました。これでrecfsusb2n.confとchannels.ymlが作れます。
+BS部分のconfigを生成するExcelシートを作りました。これでBSのrecfsusb2n.confとchannels.ymlが作れます。地上波は居住地に沿ってよしなに作ってください。
 * [BS_Channels.xlsx - Microsoft Excel Online](https://1drv.ms/x/s!AsyRfEh_oDaBzmlU00vgHoC9DC5N?e=s0GiDx)
 
 チャンネル指定に必要な情報たち(地上波)
