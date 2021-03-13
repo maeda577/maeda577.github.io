@@ -22,8 +22,8 @@ BS部分のconfigを生成するExcelシートを作りました。これでBS�
 * [BSデジタル放送局一覧 \| 一般社団法人放送サービス高度化推進協会（A-PAB）](https://www.apab.or.jp/bs/station/)
     * ここに書かれた「チャンネル番号」は論理チャンネルと呼ばれるらしく、各configに指定する際のSID(Service ID)に相当する
     * 物理のchannelはまた別
-* [衛星放送の現状 \| eisei.pdf](https://www.soumu.go.jp/main_sosiki/joho_tsusin//eisei/eisei.pdf)
-    * 「ＢＳ放送（右旋）のテレビ番組のチャンネル配列図」のスライドに物理チャンネルが書かれている
+* [総務省｜令和2年版 情報通信白書｜事業者数及び放送サービスの提供状況](https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r02/html/nd251820.html)
+    * 「図表5-1-8-8　BS放送のテレビ番組のチャンネル配列図」が物理チャンネルの一覧 (2021/03/13追記 リンク切れしてたのを修正)
         * 左旋は主に4K用なのでとりあえず気にしない
     * 1つの物理チャンネルに複数の放送が含まれている
 * [茂木 和洋さんはTwitterを使っています 「ARIB TR-B15 記載のルールに従うと、明日からの NHK BS プレミアムの TSID は 0x4031 (16433) になるのだろうなっと。 https://t.co/kTuCCs3l4L」 / Twitter](https://twitter.com/kzmogi/status/993345535565156353)
