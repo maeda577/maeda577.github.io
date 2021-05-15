@@ -104,3 +104,38 @@ Get-WBBackupSet
 # 次のバックアップ日時
 Get-WBSummary
 ```
+
+## サーバーマネージャーを使ってリモート接続
+* 名前解決エラーが出るときはクライアント側でhostsファイルに書く
+    * FQDNだけでなく、ホスト名でも解決できないとエラーが出る
+    * hyperv01.hogehuga.com だけでなくhyperv01でも引ける、みたいなイメージ
+
+``` powershell
+# ネットワークプロファイルがパブリックの場合、WinRM用のTCP/5985は同一セグメントからしか繋がらない
+Get-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC
+Get-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC | Get-NetFirewallAddressFilter
+# 必要なセグメントからも許可する
+Set-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC -RemoteAddress LocalSubnet,192.168.0.0/255.255.0.0
+# GUIから設定してもいい。ルールの日本語名は「Windows リモート管理 (HTTP 受信)」
+wf.msc
+
+# リモート管理の有効化
+Set-WSManQuickConfig
+# 認証の有効化
+Enable-WSManCredSSP -Role Server
+```
+
+* 以下は接続するクライアント側で管理者権限PowerShellを起動して実行
+
+``` powershell
+# オプション機能の一覧を取得
+Get-WindowsCapability -Online
+# サーバーマネージャーをインストール
+Add-WindowsCapability -Online -Name Rsat.ServerManager.Tools~~~~0.0.1.0
+
+# リモート管理の有効化
+Set-WSManQuickConfig -SkipNetworkProfileCheck
+# 認証の有効化
+Enable-WSManCredSSP -Role Client -DelegateComputer *
+Set-Item wsman:\localhost\Client\TrustedHosts *
+```
