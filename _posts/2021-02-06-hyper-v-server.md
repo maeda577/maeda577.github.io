@@ -5,6 +5,8 @@ date: 2021-02-06 14:56 +0900
 ---
 Hyper-V Server 2019の初期設定メモです。ファイル共有かけてWindowsServerバックアップ設定します。
 
+2021/05/15 追記：[サーバーマネージャー関連の手順を追加](https://github.com/maeda577/maeda577.github.io/commit/3bf24245941b1fb29877f5561ae18dd71c58c3b4)
+
 ## OSインストール
 1. 普通にISOからインストール
 1. Administratorパスワードを設定
