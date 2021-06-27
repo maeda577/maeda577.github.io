@@ -35,11 +35,12 @@ Restart-Computer
 ```
 
 ## ファイル共有
-* 勝手に入っていたので書くことがない
 
 ``` powershell
-# File Serverあたりの機能が入っていることを確認
+# File Serverあたりの機能が入っていることを確認し、無ければ入れる
+# 単純に共有するだけなら要らないかもしれない
 Get-WindowsFeature
+Install-WindowsFeature -Name FS-FileServer
 
 # フォルダ作って共有する
 New-Item -Path C:/Share -ItemType Directory
@@ -98,7 +99,7 @@ Set-WBPolicy -Policy $policy -AllowDeleteOldBackups
 # 確定できたか見る
 Get-WBPolicy
 
-# バックアップを即時実行
+# バックアップを即時実行
 Get-WBPolicy | Start-WBBackup
 # うまくいったかを見る
 Get-WBBackupSet
@@ -109,8 +110,9 @@ Get-WBSummary
 
 ## サーバーマネージャーを使ってリモート接続
 * 名前解決エラーが出るときはクライアント側でhostsファイルに書く
-    * FQDNだけでなく、ホスト名でも解決できないとエラーが出る
+* FQDNで指定する時はホスト名でも解決できないとエラーが出る
     * hyperv01.hogehuga.com だけでなくhyperv01でも引ける、みたいなイメージ
+    * この場合はhostsじゃなくてプライマリDNSサフィックスを設定した方がよさそう
 
 ``` powershell
 # ネットワークプロファイルがパブリックの場合、WinRM用のTCP/5985は同一セグメントからしか繋がらない
@@ -140,4 +142,11 @@ Set-WSManQuickConfig -SkipNetworkProfileCheck
 # 認証の有効化
 Enable-WSManCredSSP -Role Client -DelegateComputer *
 Set-Item wsman:\localhost\Client\TrustedHosts *
+```
+
+* あとはサーバーマネージャーやHyper-Vマネージャーなどでつなぐ
+    * 認証情報がうまく入らないときは以下であらかじめ記憶させておくといいかもしれない
+
+``` shell
+cmdkey /add:<接続先ホスト名> /user:<ログインID> /pass:<パスワード>
 ```
