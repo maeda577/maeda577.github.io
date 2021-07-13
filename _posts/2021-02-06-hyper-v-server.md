@@ -37,11 +37,6 @@ Restart-Computer
 ## ファイル共有
 
 ``` powershell
-# File Serverあたりの機能が入っていることを確認し、無ければ入れる
-# 単純に共有するだけなら要らないかもしれない
-Get-WindowsFeature
-Install-WindowsFeature -Name FS-FileServer
-
 # フォルダ作って共有する
 New-Item -Path C:/Share -ItemType Directory
 New-SmbShare -Path C:/Share -Name share
@@ -49,6 +44,11 @@ Grant-SmbShareAccess -Name share -AccountName Administrators -AccessRight Full
 
 # 普通にエクスプローラ上げて共有作ってもいい
 explorer.exe
+
+# リモートからサーバーマネージャー経由で共有を作る場合は
+# File Serverの機能を入れておく
+Get-WindowsFeature
+Install-WindowsFeature -Name FS-FileServer
 ```
 
 ## Windows Server バックアップ
@@ -113,9 +113,12 @@ Get-WBSummary
 * FQDNで指定する時はホスト名でも解決できないとエラーが出る
     * hyperv01.hogehuga.com だけでなくhyperv01でも引ける、みたいなイメージ
     * この場合はhostsじゃなくてプライマリDNSサフィックスを設定した方がよさそう
+* ググるとCredSSPを有効化する記事が多いが、現在のデフォルト値はドメイン環境でKerberos、ワークグループ環境でNTLMっぽいので無理に有効化する必要もなさそう
+    * [WinRM を使用した PowerShell リモート処理のセキュリティに関する考慮事項 - PowerShell \| Microsoft Docs](https://docs.microsoft.com/ja-jp/powershell/scripting/learn/remoting/winrmsecurity?view=powershell-7.1)
 
 ``` powershell
 # ネットワークプロファイルがパブリックの場合、WinRM用のTCP/5985は同一セグメントからしか繋がらない
+Get-NetConnectionProfile
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC | Get-NetFirewallAddressFilter
 # 必要なセグメントからも許可する
@@ -123,10 +126,20 @@ Set-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC -RemoteAddress LocalSubnet,19
 # GUIから設定してもいい。ルールの日本語名は「Windows リモート管理 (HTTP 受信)」
 wf.msc
 
+# ネットワークプロファイルを変えてしまう場合は以下
+# Get-NetConnectionProfile -InterfaceIndex 7 | Set-NetConnectionProfile -NetworkCategory Private
+
 # リモート管理の有効化
-Set-WSManQuickConfig
-# 認証の有効化
-Enable-WSManCredSSP -Role Server
+# Set-WSManQuickConfig で一気にやってくれるらしいが、Hyper-V Serverだとデフォルトで有効化されいるっぽい
+
+# WinRMサービスが起動していることを確認する
+Get-Service -Name WinRM
+# HTTP・5985ポートでListenしているのを確認
+Get-WSManInstance -ResourceURI winrm/config/Listener -Enumerate
+
+# CredSSP認証の有効化(これはデフォルトでは有効じゃなかった。無くても動きそう)
+# Get-WSManCredSSP
+# Enable-WSManCredSSP -Role Server
 ```
 
 * 以下は接続するクライアント側で管理者権限PowerShellを起動して実行
@@ -137,16 +150,11 @@ Get-WindowsCapability -Online
 # サーバーマネージャーをインストール
 Add-WindowsCapability -Online -Name Rsat.ServerManager.Tools~~~~0.0.1.0
 
-# リモート管理の有効化
-Set-WSManQuickConfig -SkipNetworkProfileCheck
-# 認証の有効化
-Enable-WSManCredSSP -Role Client -DelegateComputer *
+# リモート管理での認証の有効化
 Set-Item wsman:\localhost\Client\TrustedHosts *
+# 厳密に設定するならホスト名をカンマ区切りで入れる
+# Set-Item wsman:\localhost\Client\TrustedHosts hv01.contoso.com
 ```
 
 * あとはサーバーマネージャーやHyper-Vマネージャーなどでつなぐ
-    * 認証情報がうまく入らないときは以下であらかじめ記憶させておくといいかもしれない
-
-``` shell
-cmdkey /add:<接続先ホスト名> /user:<ログインID> /pass:<パスワード>
-```
+    * 認証情報のIDは`接続先ホスト名\Administrator`の形式で入れると良さそう
