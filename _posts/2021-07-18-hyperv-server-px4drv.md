@@ -101,6 +101,7 @@ px4_drvのWinUSB版ビルド
     * これをPowerShellでDLしようとするとただのHTMLが返ってくる
 * Dockerに入れる手順にDL用URLが書かれているのでそっちを使う
     * [Visual Studio Build Tools をコンテナーにインストールする \| Microsoft Docs](https://docs.microsoft.com/ja-jp/visualstudio/install/build-tools-container?view=vs-2019)
+* 他のマシンでビルドする場合も[Visual C++ Redistributable x64](https://aka.ms/vs/16/release/VC_redist.x64.exe)だけは入れる
 
 ``` powershell
 # Build Tools for Visual Studio 2019を入れる
@@ -249,3 +250,15 @@ New-NetFirewallRule -Name Mirakurun-In-TCP -DisplayName "Mirakurun (TCP 受信)"
 
 * 他のPCから `http://<ip_address>:40772/` を開きMirakurunのWebUIが開けばOK
 * EPGStaionやChinachuなどは適当にHyper-V上の仮想マシンで構築する
+
+再起動して不調になった時にやることメモ
+-------------------
+* まずはテスト実行
+    * `C:\DTV\bin\BonRecTest.exe --driver BonDriver_PX4-T.dll --output C:\DTV\bin\output.ts --channel 14 --decoder B25Decoder.dll`
+* チューナーが見つからない、的なエラー
+    * `devmgmt`で`ハードウェア変更のスキャン`
+* `px4::DeviceBase::DeviceBase: CreateFileW() failed.` と `BonDriver::OpenTuner: WaitForSingleObject() failed.`
+    * 原因わからず、しばらく待ってみたら(10分以上)解消した
+    * この状態でもmirakurunのEPG情報は取れていたので謎
+* mirakurunのWebUIが開かない
+    * `Restart-Service mirakurun`
