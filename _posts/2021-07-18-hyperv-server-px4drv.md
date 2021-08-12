@@ -187,6 +187,7 @@ Copy-Item .\BonRecTest_v1.0.0\x64\BonRecTest.exe ..\bin\
 
 # テスト実行。10秒ぐらい待って何も出なければCtrl+cで止める
 # output.tsのファイルサイズが膨らんでいればOK
+# CreateFileW() failed.が出た場合、無視して進めてEPGStation経由なら動くかもしれない
 ..\bin\BonRecTest.exe --driver BonDriver_PX4-T.dll --output output.ts --channel 14 --decoder B25Decoder.dll
 ```
 
@@ -251,6 +252,24 @@ New-NetFirewallRule -Name Mirakurun-In-TCP -DisplayName "Mirakurun (TCP 受信)"
 * 他のPCから `http://<ip_address>:40772/` を開きMirakurunのWebUIが開けばOK
 * EPGStaionやChinachuなどは適当にHyper-V上の仮想マシンで構築する
 
+起動時にデバイススキャンする
+-------------------
+* 再起動するとPX-W3PE5を見失うことが多かった
+    * タスクスケジューラで起動時にデバイススキャンをかけるようにしたら安定した
+* devcon.exeが必要。いちいちWDKを入れたくない場合はdevconだけ取り出せるらしい
+    * [Windows Driver Kitをインストールすることなしにdevcon.exeを用意する – guro_chanの手帳](https://www7390uo.sakura.ne.jp/wordpress/archives/705)
+
+``` powershell
+# 起動時にタスクを起動するトリガー
+$trigger = New-ScheduledTaskTrigger -AtStartUp
+# devconを起動するアクション
+$action = New-ScheduledTaskAction -Execute "C:\Program Files (x86)\Windows Kits\10\Tools\x64\devcon.exe" -Argument "rescan"
+# Administratorで起動する
+$principal = New-ScheduledTaskPrincipal -UserId SYSTEM -LogonType ServiceAccount
+# タスク登録
+Register-ScheduledTask -TaskName "RescanDevice" -Trigger $trigger -Action $action -Principal $principal
+```
+
 再起動して不調になった時にやることメモ
 -------------------
 * まずはテスト実行
@@ -258,7 +277,7 @@ New-NetFirewallRule -Name Mirakurun-In-TCP -DisplayName "Mirakurun (TCP 受信)"
 * チューナーが見つからない、的なエラー
     * `devmgmt`で`ハードウェア変更のスキャン`
 * `px4::DeviceBase::DeviceBase: CreateFileW() failed.` と `BonDriver::OpenTuner: WaitForSingleObject() failed.`
-    * 原因わからず、しばらく待ってみたら(10分以上)解消した
-    * この状態でもmirakurunのEPG情報は取れていたので謎
+    * 原因わからず、しばらく待ってみたら(10分以上)解消したこともある
+    * この状態でもmirakurunのEPG情報は取れていたり、EPGStation経由で見れたりする
 * mirakurunのWebUIが開かない
     * `Restart-Service mirakurun`
