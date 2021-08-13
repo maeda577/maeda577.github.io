@@ -151,6 +151,7 @@ sudo vi /etc/wireguard/android.conf
 PrivateKey = </etc/wireguard/android.keyの中身>
 Address = 172.16.30.10
 DNS = 8.8.8.8   # クライアント側でDNSサーバをDHCPからもらう設定にしていて、それがローカルIPアドレスだとつながらなくなるのでDNSを固定させる
+ExcludedApplications = com.google.android.gms   # GMSをVPNの対象外にする。VPNを張った状態でGoogleCastが出来ないためで、Castを使わないなら不要
  
 [Peer]
 PublicKey = </etc/wireguard/server.pubの中身>
@@ -180,7 +181,7 @@ sudo sysctl --load
 
 # iptablesでフォワードを全許可する
 sudo iptables --insert FORWARD 1 --table filter --jump ACCEPT
-# 以外への通信でNAPTを有効化する
+# 外への通信でNAPTを有効化する
 sudo iptables --insert POSTROUTING 1 --table nat --out-interface enp0s3 --jump MASQUERADE
 # ルール保存
 sudo iptables-save --file /etc/iptables/rules.v4
