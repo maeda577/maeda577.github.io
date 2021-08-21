@@ -58,6 +58,7 @@ sudo apt upgrade
 # タイムゾーン設定
 sudo timedatectl set-timezone Asia/Tokyo
 # HWEでWireGuardがマージされた以降のKernelに更新する(多分必須ではない)
+# x86版のイメージでは最初から5.8.0だったので特に要らない
 sudo apt install linux-generic-hwe-20.04
 sudo reboot
 # Kernelが5.6以降になっていればWireGuardがマージされているはず
