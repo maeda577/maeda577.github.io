@@ -33,10 +33,10 @@ function Update-FileNameWithNumberPadding {
     [CmdletBinding(SupportsShouldProcess = $true)]
     Param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [ValidateScript( { Test-Path $_ })]
-        [string]
-        # Target file path for update.
-        $Path,
+        [ValidateScript( { Test-Path $_.FullName })]
+        [System.IO.FileInfo]
+        # Target file for update.
+        $FileInfo,
         [int]
         # Padding width. Default is 3.
         $TotalWidth = 3,
@@ -45,12 +45,11 @@ function Update-FileNameWithNumberPadding {
         $PaddingChar = '0'
     )
     Process{
-        $file = Get-Item -Path $Path
-        $selectStr = Select-String -InputObject $file.Name -Pattern "\d+" -AllMatches
+        $selectStr = Select-String -InputObject $FileInfo.Name -Pattern "\d+" -AllMatches
         if ($null -eq $selectStr) { return }
         $lastMatch = $selectStr.Matches | Select-Object -Last 1
-        $newName = $file.Name.Substring(0, $lastMatch.Index) + $lastMatch.Value.PadLeft($TotalWidth, $PaddingChar) + $file.Name.Substring($lastMatch.Index + $lastMatch.Length)
-        Move-Item -Path $file.FullName -Destination ($file.Parent + $newName) -WhatIf:$WhatIfPreference
+        $newName = $FileInfo.Name.Substring(0, $lastMatch.Index) + $lastMatch.Value.PadLeft($TotalWidth, $PaddingChar) + $FileInfo.Name.Substring($lastMatch.Index + $lastMatch.Length)
+        Move-Item -Path $FileInfo.FullName -Destination (Join-Path -Path $FileInfo.DirectoryName -ChildPath $newName) -WhatIf:$WhatIfPreference
     }
 }
 ```
@@ -59,5 +58,7 @@ function Update-FileNameWithNumberPadding {
 -----------------
 1. 上に書いた関数をPowerShellウィンドウにコピペする
 1. 対象ファイルがあるディレクトリに移動する
-1. `Get-ChildItem | Update-FileNameWithNumberPadding -WhatIf` でいい感じに動いているか試す
-1. `Get-ChildItem | Update-FileNameWithNumberPadding` でリネームする
+1. 対象ファイルを取得するGet-ChildItem関数を考える
+    * `Get-ChildItem -File -Recurse -Include "*.jpg"` など
+1. `Get-ChildItem -File -Recurse -Include "*.jpg" | Update-FileNameWithNumberPadding -WhatIf` でいい感じに動いているか試す
+1. `Get-ChildItem -File -Recurse -Include "*.jpg" | Update-FileNameWithNumberPadding` でリネームする
