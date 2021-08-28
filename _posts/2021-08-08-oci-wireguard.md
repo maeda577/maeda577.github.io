@@ -12,8 +12,7 @@ Oracle Cloud InfrastructureのAlways Freeが大盤振る舞いだったのでWir
     * 公衆無線LANなどを使う想定なので、NAPT配下でかつNAPT後のグローバルIPアドレスは不定
 * クライアントはこのサーバでNAPTしてインターネットに出られるようにする
     * Always FreeではVCNのNATゲートウェイが作れなかったので、ここでNAPTするのがよさそう
-* WireGuardサーバは123/udpで待ち受ける
-    * 公衆無線LANでも開いてそうだったから
+* WireGuardサーバは51820/udpで待ち受ける
 
 IPアドレス関連のパラメータ
 -------------------
@@ -40,7 +39,7 @@ VCN作成
 * [セキュリティリスト]->[Default Security List]->[イングレスルールの追加] で以下を加える
     * ソースCIDR: 0.0.0.0/0
     * IPプロトコル: UDP
-    * 宛先ポート範囲: 123
+    * 宛先ポート範囲: 51820
 
 仮想マシン作成
 -------------------
@@ -74,8 +73,8 @@ WireGuardサーバ構築
     * [Netplan \| Backend-agnostic network configuration in YAML](https://netplan.io/reference/)
 
 ``` shell
-# 既存iptablesで123/udpを開ける
-sudo iptables --insert INPUT 1 --protocol udp --dport 123 --jump ACCEPT
+# 既存iptablesで51820/udpを開ける
+sudo iptables --insert INPUT 1 --protocol udp --dport 51820 --jump ACCEPT
 # ルール保存
 sudo iptables-save --file /etc/iptables/rules.v4
 
@@ -114,7 +113,7 @@ network:
       mode: wireguard
       addresses:
         - 172.17.10.1/24
-      port: 123
+      port: 51820
       keys:
         private: /etc/wireguard/server.key # ホストの秘密鍵。自分しか触らないサーバなら直接書いてもいい
       peers:
@@ -156,7 +155,7 @@ ExcludedApplications = com.google.android.gms   # GMSをVPNの対象外にする
  
 [Peer]
 PublicKey = </etc/wireguard/server.pubの中身>
-EndPoint = <OCI上で確認できるホストのグローバルIP>:123
+EndPoint = <OCI上で確認できるホストのグローバルIP>:51820
 AllowedIPs = 0.0.0.0/0      # 公衆無線LANで使う想定なので全通信をWireGuard経由にする
 PersistentKeepAlive = 30    # NAT配下、かつ一方的にパケットを受け取る場合は入れたほうがいいらしい。多分要らない
 ```
