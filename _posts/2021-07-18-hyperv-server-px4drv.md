@@ -33,8 +33,9 @@ mkdir C:\DTV\work\inf
 # 以降の作業は全てworkで行う
 cd C:\DTV\work
 
-# px4_drvのwinusbブランチをダウンロードしてくる
-Invoke-WebRequest https://github.com/nns779/px4_drv/archive/refs/heads/winusb.zip -OutFile px4_drv.zip
+# px4_drvのdevelopブランチをダウンロードしてくる
+# 以前はwinusbブランチだったがマージされた
+Invoke-WebRequest https://github.com/nns779/px4_drv/archive/refs/heads/develop.zip -OutFile px4_drv.zip
 Expand-Archive -Path .\px4_drv.zip -DestinationPath .\
 ```
 
@@ -49,7 +50,7 @@ Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=2166289 -OutFile wdkse
 
 # infにCatalogFileの定義を加えて別ディレクトリに入れる
 # ディレクトリ分けるのはInf2Catの引数でディレクトリを指定する必要があるため
-Get-Content .\px4_drv-winusb\winusb\pkg\inf\pxw3pe5_winusb.inf |
+Get-Content .\px4_drv-develop\winusb\pkg\inf\pxw3pe5_winusb.inf |
   ForEach-Object { $_.Replace("[Version]","[Version]`r`nCatalogFile.NTAMD64 = pxw3pe5_winusb.cat") } |
   Set-Content .\inf\pxw3pe5_winusb.inf
 
@@ -112,23 +113,23 @@ Invoke-WebRequest https://aka.ms/vs/16/release/vs_buildtools.exe -OutFile vs_bui
 # Visual Studio 2019 Developer PowerShellに切り替える
 & "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\Launch-VsDevShell.ps1"
 # ビルド
-MSBuild .\px4_drv-winusb\winusb\px4_winusb.sln /t:clean /t:build /p:Configuration=Release /p:Platform=x64
+MSBuild .\px4_drv-develop\winusb\px4_winusb.sln /t:clean /t:build /p:Configuration=Release /p:Platform=x64
 
 # ビルドしたものを移動しておく
-Copy-Item .\px4_drv-winusb\winusb\build\x64\Release\BonDriver_PX4.dll ..\bin\BonDriver_PX4-T.dll
-Copy-Item .\px4_drv-winusb\winusb\build\x64\Release\BonDriver_PX4.dll ..\bin\BonDriver_PX4-S.dll
-Copy-Item .\px4_drv-winusb\winusb\build\x64\Release\DriverHost_PX4.exe ..\bin\
+Copy-Item .\px4_drv-develop\winusb\build\x64\Release\BonDriver_PX4.dll ..\bin\BonDriver_PX4-T.dll
+Copy-Item .\px4_drv-develop\winusb\build\x64\Release\BonDriver_PX4.dll ..\bin\BonDriver_PX4-S.dll
+Copy-Item .\px4_drv-develop\winusb\build\x64\Release\DriverHost_PX4.exe ..\bin\
 
 # 設定ファイルのコピー
-Copy-Item .\px4_drv-winusb\winusb\pkg\BonDriver_PX4\BonDriver_PX4-S.ChSet.txt ..\bin\
-Copy-Item .\px4_drv-winusb\winusb\pkg\BonDriver_PX4\BonDriver_PX4-T.ChSet.txt ..\bin\
-Copy-Item .\px4_drv-winusb\winusb\pkg\BonDriver_PX4\BonDriver_PX4-S.ini ..\bin\
-Copy-Item .\px4_drv-winusb\winusb\pkg\BonDriver_PX4\BonDriver_PX4-T.ini ..\bin\
-Copy-Item .\px4_drv-winusb\winusb\pkg\DriverHost_PX4\DriverHost_PX4.ini ..\bin\
+Copy-Item .\px4_drv-develop\winusb\pkg\BonDriver_PX4\BonDriver_PX4-S.ChSet.txt ..\bin\
+Copy-Item .\px4_drv-develop\winusb\pkg\BonDriver_PX4\BonDriver_PX4-T.ChSet.txt ..\bin\
+Copy-Item .\px4_drv-develop\winusb\pkg\BonDriver_PX4\BonDriver_PX4-S.ini ..\bin\
+Copy-Item .\px4_drv-develop\winusb\pkg\BonDriver_PX4\BonDriver_PX4-T.ini ..\bin\
+Copy-Item .\px4_drv-develop\winusb\pkg\DriverHost_PX4\DriverHost_PX4.ini ..\bin\
 
 # firmware抽出用のファイルもコピー
-Copy-Item .\px4_drv-winusb\winusb\build\x64\Release\fwtool.exe .\
-Copy-Item .\px4_drv-winusb\fwtool\fwinfo.tsv .\
+Copy-Item .\px4_drv-develop\winusb\build\x64\Release\fwtool.exe .\
+Copy-Item .\px4_drv-develop\fwtool\fwinfo.tsv .\
 ```
 
 firmwareの抽出
@@ -279,5 +280,6 @@ Register-ScheduledTask -TaskName "RescanDevice" -Trigger $trigger -Action $actio
 * `px4::DeviceBase::DeviceBase: CreateFileW() failed.` と `BonDriver::OpenTuner: WaitForSingleObject() failed.`
     * 原因わからず、しばらく待ってみたら(10分以上)解消したこともある
     * この状態でもmirakurunのEPG情報は取れていたり、EPGStation経由で見れたりする
+    * 2021/09/01時点のdevelopブランチの最新版をビルドして差し替えたら直った感じがする
 * mirakurunのWebUIが開かない
     * `Restart-Service mirakurun`
