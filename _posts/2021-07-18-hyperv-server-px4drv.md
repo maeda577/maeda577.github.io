@@ -197,6 +197,9 @@ Node.jsとmirakurunのインストール
 * Node.jsのURLは適宜変える
 * mirakurunの設定はググれば出てくる
     * channels.ymlの地上波のチャンネル番号はLinux版と13ずれる
+* 録画の先頭が切れる問題が起きたので`maxBufferBytesBeforeReady`を設定した
+    * [録画マージンを設定出来るようにして欲しい · Issue #93 · l3tnun/EPGStation](https://github.com/l3tnun/EPGStation/issues/93)
+    * 環境による気がする
 
 ``` powershell
 # Node.jsインストール。設定は全部デフォルトで入れる
@@ -218,7 +221,8 @@ Invoke-RestMethod http://localhost:40772/api/status
 notepad C:\Users\Administrator\.Mirakurun\tuners.yml
 # channelsは地域に合わせて
 notepad C:\Users\Administrator\.Mirakurun\channels.yml
-# serverはそのままでいい
+# serverはそのままでいいはず
+# 手元環境では録画の先頭が切れたので maxBufferBytesBeforeReady: 16777216 (初期値の倍)とか設定した
 notepad C:\Users\Administrator\.Mirakurun\server.yml
 # 設定したらmirakurun再起動
 Restart-Service mirakurun
