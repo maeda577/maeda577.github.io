@@ -122,7 +122,7 @@ Get-NetConnectionProfile
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC
 Get-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC | Get-NetFirewallAddressFilter
 # 必要なセグメントからも許可する
-Set-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC -RemoteAddress LocalSubnet,192.168.0.0/255.255.0.0
+Set-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC -RemoteAddress LocalSubnet,172.16.0.0/255.240.0.0,192.168.0.0/255.255.0.0
 # GUIから設定してもいい。ルールの日本語名は「Windows リモート管理 (HTTP 受信)」
 wf.msc
 
@@ -158,3 +158,18 @@ Set-Item wsman:\localhost\Client\TrustedHosts *
 
 * あとはサーバーマネージャーやHyper-Vマネージャーなどでつなぐ
     * 認証情報のIDは`接続先ホスト名\Administrator`の形式で入れると良さそう
+
+## (未検証)Windowsコンテナの有効化
+* 折角なのでコンテナも使いたかったけどライセンス的に無理そう
+    * [Microsoft Software EULA Windows Containers \| Microsoft Docs](https://docs.microsoft.com/ja-jp/virtualization/windowscontainers/images-eula)
+    * Hyper-V Serverに対して何も言及されていない…
+
+> The Container Image may only be used with a validly licensed copy of:
+>
+> Windows Server Standard or Windows Server Datacenter software (collectively “Server Host Software”), or Microsoft Windows Operating System (version 10) software (“Client Host Software”), or Windows 10 IoT Enterprise and Windows 10 IoT Core (collectively “IoT Host Software”). The Server Host Software, Client Host Software, and IoT Host Software are collectively referred to as the “Host Software” and a license for Host Software is a "Host License".
+
+* 手順的にはここらへん
+    * Microsoft版手順 [Windows オペレーティング システム コンテナーの準備 \| Microsoft Docs](https://docs.microsoft.com/ja-jp/virtualization/windowscontainers/quick-start/set-up-environment?tabs=Windows-Server)
+    * Mirantis版手順 [Install MCR on Windows Servers - MCR documentation](https://docs.mirantis.com/mcr/20.10/install/mcr-windows.html)
+* Docker Enterprise事業はMirantisに買収されたらしいので、Mirantis版の方が新しそう。ただライセンスがやっぱり分からない…
+    * [山市良のえぬなんとかわーるど: ［速報］Docker Enterprise 改め、Mirantis Container Runtime (MCR) リリース（Engine 19.03.13）](https://yamanxworld.blogspot.com/2020/11/docker-enterprise-mirantis-container.html)
