@@ -11,7 +11,19 @@
                 "kind": "test",
                 "isDefault": true
             },
-            "isBackground": true,
+            "isBackground": true
+        },
+        {
+            "label": "Create draft",
+            "type": "shell",
+            "command": "bundle exec jekyll draft ${input:draftName}",
+            "problemMatcher": []
+        },
+        {
+            "label": "Publish draft",
+            "type": "shell",
+            "command": "bundle exec jekyll publish _drafts/${input:draftName}",
+            "problemMatcher": []
         },
         {
             "label": "Build",
@@ -20,7 +32,14 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "promptString",
+            "id": "draftName",
+            "description": "Enter draft name"
         }
     ]
 }
