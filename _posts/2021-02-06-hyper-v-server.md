@@ -159,7 +159,7 @@ Set-Item wsman:\localhost\Client\TrustedHosts *
 * あとはサーバーマネージャーやHyper-Vマネージャーなどでつなぐ
     * 認証情報のIDは`接続先ホスト名\Administrator`の形式で入れると良さそう
 
-## (未検証)Windowsコンテナの有効化
+## (失敗)Windowsコンテナの有効化
 * 折角なのでコンテナも使いたかったけどライセンス的に無理そう
     * [Microsoft Software EULA Windows Containers \| Microsoft Docs](https://docs.microsoft.com/ja-jp/virtualization/windowscontainers/images-eula)
     * Hyper-V Serverに対して何も言及されていない…
@@ -173,3 +173,4 @@ Set-Item wsman:\localhost\Client\TrustedHosts *
     * Mirantis版手順 [Install MCR on Windows Servers - MCR documentation](https://docs.mirantis.com/mcr/20.10/install/mcr-windows.html)
 * Docker Enterprise事業はMirantisに買収されたらしいので、Mirantis版の方が新しそう。ただライセンスがやっぱり分からない…
     * [山市良のえぬなんとかわーるど: ［速報］Docker Enterprise 改め、Mirantis Container Runtime (MCR) リリース（Engine 19.03.13）](https://yamanxworld.blogspot.com/2020/11/docker-enterprise-mirantis-container.html)
+* 実際にやってみたら `Enable-WindowsOptionalFeature -Online -FeatureName containers` で失敗したのでそもそも無理っぽい
