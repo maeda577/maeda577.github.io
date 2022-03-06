@@ -21,6 +21,8 @@ vPro対応のPCを買ったものの公式ツールが使えなかったのでOS
 * 以下コマンドでコンテナ作成。Linux系OSの場合は適宜sudoする
     * nodejsはPID1で動かすとよろしくないらしいので--initをつける
     * [docker-node/BestPractices.md at main · nodejs/docker-node · GitHub](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals)
+* バージョンは以下にあるものを指定
+    * [meshcommander - npm](https://www.npmjs.com/package/meshcommander)
 
 ``` shell
 # バージョンは0.9.3-b
