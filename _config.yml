@@ -77,3 +77,6 @@ google_site_verification: "wKiRlrvcN7MMZ7FufJV64cfKKXfO7Ozd3baQtqYpu9Y"
 
 timezone: Asia/Tokyo
 lang: ja-JP
+
+exclude:
+  - CommandMemo.md
