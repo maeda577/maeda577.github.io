@@ -73,10 +73,13 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
-google_site_verification: "wKiRlrvcN7MMZ7FufJV64cfKKXfO7Ozd3baQtqYpu9Y"
-
 timezone: Asia/Tokyo
 lang: ja-JP
 
 exclude:
   - CommandMemo.md
+
+# https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
+webmaster_verifications:
+  google: wKiRlrvcN7MMZ7FufJV64cfKKXfO7Ozd3baQtqYpu9Y
+  bing: C569D6B7D035A4A3A505C2E8986E485F
