@@ -21,6 +21,8 @@ description: 色々やってみたことの備忘録
 
 show_excerpts: false # set to true to show excerpts on the homepage
 
+theme: minima
+
 # Minima date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
 minima:
@@ -64,9 +66,7 @@ minima:
 header_pages:
   - about.md
 
-# Build settings
-theme: minima
-
+# https://docs.github.com/ja/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll#plugins
 plugins:
   - jekyll-feed
   - jekyll-gist
@@ -78,6 +78,9 @@ lang: ja-JP
 
 exclude:
   - CommandMemo.md
+  - README.md
+  - Gemfile
+  - Gemfile.lock
 
 # https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 webmaster_verifications:
