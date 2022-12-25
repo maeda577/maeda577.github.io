@@ -50,6 +50,15 @@ Disk1の容量がまるで違う…何故…Disk2は合ってる…
     * [仮想互換モードの Raw デバイス マッピングの作成](https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-43684552-655C-4893-AE02-9992F51D87B6.html) の通り、-rオプションでRDMを作り直す
     * 直った！！！！！！！
 
+コマンドサンプルは以下
+
+``` shell
+# 物理デバイスの一覧。必要なのはConsole Deviceの列
+esxcfg-scsidevs --compact-list
+# 仮想互換モードでRDMを作る。作成先は既存のdatastore
+vmkfstools --createrdm /vmfs/devices/disks/t10.ATA_____TOSHIBA_MQ04ABD200_________________________________<シリアルっぽい文字列> /vmfs/volumes/datastore1/rdm_TOSHIBA_MQ04ABD200.vmdk
+```
+
 おわりに
 ---------------------
 * 2TB超えのディスクをRDMするときは仮想互換モードで作るべし

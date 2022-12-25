@@ -42,6 +42,16 @@ Expand-Archive -Path .\px4_drv.zip -DestinationPath .\
 ドライバの署名
 -------------------
 * 起動時にF8連打して「ドライバー署名の強制を無効にする」を使う場合は不要
+* 諸々書いたがZadigでやると署名済みドライバが入るのでとても楽だった
+    * [Zadig - USB driver installation made easy](https://zadig.akeo.ie/)
+    * Zadigのconfigはこんな感じ。各種パラメータはinfから抜き出す。[px4_drv/winusb/pkg/inf at develop · nns779/px4_drv](https://github.com/nns779/px4_drv/tree/develop/winusb/pkg/inf)
+        ```
+        [device]
+          Description = "PLEX PX-MLT5PE ISDB-T/S Receiver Device (WinUSB)"
+          VID = 0x0511
+          PID = 0x024E
+          GUID = "{eeb8e93b-1007-4e3e-8ce9-4f7ebdf3aba1}"
+        ```
 
 ``` powershell
 # Windows Driver Kitのダウンロードとインストール(Inf2Cat.exeを使うためだけに入れる)
@@ -154,19 +164,9 @@ libaribb25のビルド
 Invoke-WebRequest https://github.com/epgdatacapbon/libaribb25/archive/refs/heads/master.zip -OutFile libaribb25.zip
 Expand-Archive -Path .\libaribb25.zip -DestinationPath .\
 
-# VisualStudioの[ソリューションの再ターゲット]相当の作業
-# PlatformToolsetの値はBuild Toolsを入れた際に確認したMSVCのバージョン
-Get-ChildItem -Path .\ -Filter *.vcxproj -Recurse | 
-    ForEach-Object {
-        $fullName = $_.FullName;
-        (Get-Content $_.FullName) | 
-        ForEach-Object { $_ -replace "<WindowsTargetPlatformVersion>.+</WindowsTargetPlatformVersion>", "<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>" } |
-        ForEach-Object { $_ -replace "<PlatformToolset>.+</PlatformToolset>", "<PlatformToolset>v142</PlatformToolset>" } |    
-        Set-Content $fullName;
-    }
-
-# ビルド
-MSBuild .\libaribb25-master\arib_std_b25.sln /t:clean /t:build /p:Configuration=Release /p:Platform=x64
+# ビルド。WindowsTargetPlatformVersionとPlatformToolsetの値は導入したBuild Toolsの年度によって違う
+# https://learn.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-build-tools?view=vs-2019#desktop-development-with-c
+MSBuild .\libaribb25-master\arib_std_b25.sln /t:clean /t:build /p:Configuration=Release /p:Platform=x64 /p:WindowsTargetPlatformVersion=10.0.19041.0 /p:PlatformToolset=v142
 
 # リネームしつつ移動
 Copy-Item .\libaribb25-master\x64\Release\libaribb25.dll ..\bin\B25Decoder.dll
