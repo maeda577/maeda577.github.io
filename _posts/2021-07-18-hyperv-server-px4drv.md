@@ -42,16 +42,6 @@ Expand-Archive -Path .\px4_drv.zip -DestinationPath .\
 ドライバの署名
 -------------------
 * 起動時にF8連打して「ドライバー署名の強制を無効にする」を使う場合は不要
-* 諸々書いたがZadigでやると署名済みドライバが入るのでとても楽だった
-    * [Zadig - USB driver installation made easy](https://zadig.akeo.ie/)
-    * Zadigのconfigはこんな感じ。各種パラメータはinfから抜き出す。[px4_drv/winusb/pkg/inf at develop · nns779/px4_drv](https://github.com/nns779/px4_drv/tree/develop/winusb/pkg/inf)
-        ```
-        [device]
-          Description = "PLEX PX-MLT5PE ISDB-T/S Receiver Device (WinUSB)"
-          VID = 0x0511
-          PID = 0x024E
-          GUID = "{eeb8e93b-1007-4e3e-8ce9-4f7ebdf3aba1}"
-        ```
 
 ``` powershell
 # Windows Driver Kitのダウンロードとインストール(Inf2Cat.exeを使うためだけに入れる)
