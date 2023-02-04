@@ -38,7 +38,7 @@ date: 2022-12-25 21:03 +0900
         * [「Docker Enterprise」をMirantisが買収　Dockerは開発者ビジネスに専念 - ITmedia NEWS](https://www.itmedia.co.jp/news/articles/1911/14/news078.html)
     * 有償。たぶん商用利用でサポートが欲しい人向け。個人利用で選ぶ理由は思いつかなかった
 
-今回はdockerを入れる
+今回はMobyを入れる
 
 ## Windowsコンテナ機能の準備
 
