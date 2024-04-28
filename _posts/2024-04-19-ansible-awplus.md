@@ -29,7 +29,19 @@ pip3 install ansible-core ansible-pylibssh
 ansible-galaxy collection install ansible.netcommon alliedtelesis.awplus
 ```
 
-## 最低限のPlaybook本体
+## 最低限のPlaybook
+
+* inventory
+
+``` yaml
+all:
+  hosts:
+    x230:
+      ansible_user: manager
+      ansible_host: 192.168.11.22
+```
+
+* playbook
 
 ``` yaml
 - hosts: x230
@@ -45,14 +57,11 @@ ansible-galaxy collection install ansible.netcommon alliedtelesis.awplus
       alliedtelesis.awplus.awplus_config:
         save_when: modified   # running-configとstartup-configに差分があれば保存
       become: true
-  # awplusモジュールはnetwork_cliのconnectionが必須
-  connection: network_cli
-  # このあたりは普通inventoryで指定する
   vars:
-    # OSは普通自動で検知してくれるらしい。検知してくれなかったのでFQDNで指定するとちゃんと動く
+    # awplusモジュールはnetwork_cliのconnectionが必須
+    ansible_connection: ansible.netcommon.network_cli
+    # OSは普通自動で検知してくれるらしい。検知してくれなかったので指定した
     ansible_network_os: alliedtelesis.awplus.awplus 
-    ansible_user: manager
-    ansible_host: 192.168.11.22
 ```
 
 ## おわりに
