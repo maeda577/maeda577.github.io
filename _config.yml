@@ -76,11 +76,17 @@ plugins:
 timezone: Asia/Tokyo
 lang: ja-JP
 
+# https://jekyllrb-ja.github.io/docs/troubleshooting/#configuration-problems
 exclude:
-  - CommandMemo.md
-  - README.md
   - Gemfile
   - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - CommandMemo.md
+  - README.md
 
 # https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 webmaster_verifications:

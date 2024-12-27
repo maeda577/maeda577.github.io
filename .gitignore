@@ -3,5 +3,5 @@ _site
 _drafts
 .sass-cache
 .jekyll-metadata
-.bundle
 Gemfile.lock
+vendor/bundle
