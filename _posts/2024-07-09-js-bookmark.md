@@ -17,7 +17,7 @@ MacのSafariでテストしてます。他のブラウザで動作するかは�
 * 参考: [文字列をコピーするブックマークレットで使うクリップボードのAPI改めて見てた - hogashi.*](https://blog.hog.as/entry/2021/09/30/021450)
 
 ``` javascript
-javascript:navigator.clipboard.writeText(`[${document.title.replace('|','\\|')}](${location.href})`)
+javascript:navigator.clipboard.writeText(`[${document.title.replaceAll('|','\\|')}](${location.href})`)
 ```
 
 ## PocketにWebページを追加する
