@@ -15,5 +15,3 @@ jekyll publish _drafts/hogehoge.md
 # 公開したものをひっこめる
 jekyll unpublish _posts/yyyy-mm-dd-hogehoge.md
 ```
-
-

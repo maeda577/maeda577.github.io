@@ -1,5 +1,6 @@
 {
 	"name": "Jekyll",
-	"image": "docker.io/library/ruby:latest",
+	// https://pages.github.com/versions.json
+	"image": "docker.io/library/ruby:3.3.4",
 	"postCreateCommand": "bundle install"
 }
